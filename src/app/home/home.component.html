@@ -1,1 +1,69 @@
-<p>home works!</p>
+<div>
+  <div *ngFor="let room of rooms" class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        {{ room.title }}
+      </p>
+    </header>
+    <div class="card-content">
+      <div class="content">
+        {{ room.description }}
+      </div>
+    </div>
+    <footer class="card-footer">
+      <a href="#" class="card-footer-item">Share</a>
+      <a href="#" class="card-footer-item">Entry</a>
+    </footer>
+  </div>
+</div>
+
+<button class="button is-fab is-large is-info" (click)="openModal()">
+  <span class="icon is-small">
+    <i class="fas fa-plus"></i>
+  </span>
+</button>
+
+<div class="modal" [class.is-active]="isOpenModal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">new Room</p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="field">
+        <label class="label">Title</label>
+        <div class="control">
+          <input class="input" type="text">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <textarea class="textarea"></textarea>
+        </div>
+      </div>
+      <label class="label">Tag</label>
+      <div class="field is-grouped">
+        <p class="control is-expanded">
+          <input class="input" type="text">
+        </p>
+        <p class="control">
+          <button class="button is-info">
+            <span class="icon is-small">
+              <i class="fas fa-plus"></i>
+            </span>
+          </button>
+        </p>
+      </div>
+      <div class="tags has-addons">
+        <span class="tag is-info">Foo</span>
+        <a class="tag is-delete"></a>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success">Save</button>
+      <button class="button" (click)="closeModal()">Cancel</button>
+    </footer>
+  </div>
+</div>

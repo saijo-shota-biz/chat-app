@@ -1,0 +1,72 @@
+.chat-box {
+  background-color: lightslategray;
+  height: calc(100vh - 57.6px - 56px);
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 10px;
+  overflow: auto;
+}
+
+.input-box {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  padding-right:10px;
+  background-color: whitesmoke;
+}
+
+.yours {
+  float: left;
+  display: block;
+  position: relative; 
+  margin: 5px 0 0 5px;
+  padding: 17px 13px;
+  border-radius: 12px;
+  background: whitesmoke;
+  max-width: 70vw;
+}
+
+.yours:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 18px; 
+  left: -24px;
+  border: 12px solid transparent;
+  border-right: 12px solid whitesmoke;
+}
+
+.yours p {
+  margin: 0;
+  padding: 0;
+  word-break: break-all;
+}
+
+.mine {
+  float: right;
+  display: block;
+  position: relative; 
+  margin: 5px 0 0 5px;
+  padding: 17px 13px;
+  border-radius: 12px;
+  background: chartreuse;
+  max-width: 70vw;
+}
+
+.mine:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 18px; 
+  right: -24px;
+  border: 12px solid transparent;
+  border-left: 12px solid chartreuse;
+}
+
+.mine p {
+  margin: 0;
+  padding: 0;
+  word-break: break-all;
+}
+
