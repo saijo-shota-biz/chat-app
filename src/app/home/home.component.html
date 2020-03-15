@@ -1,6 +1,19 @@
-<div>
+<div class="home">
+  <div class="field search-field">
+    <p class="control has-icons-left">
+      <input class="input is-rounded" type="text" placeholder="type to title or tag">
+      <span class="icon is-small is-left">
+        <i class="fas fa-search"></i>
+      </span>
+    </p>
+  </div>
   <div *ngFor="let room of rooms" class="card">
     <header class="card-header">
+      <div *ngIf="room.private" class="card-header-icon">
+        <span class="icon">
+          <i class="fas fa-lock" aria-hidden="true"></i>
+        </span>
+      </div>
       <p class="card-header-title">
         {{ room.title }}
       </p>
@@ -15,6 +28,7 @@
       <a href="#" class="card-footer-item">Entry</a>
     </footer>
   </div>
+  <button *ngIf="rooms.length > 20" class="button is-fullwidth is-light" style="margin-top: 10px;">More...</button>
 </div>
 
 <button class="button is-fab is-large is-info" (click)="openModal()">
@@ -59,6 +73,17 @@
       <div class="tags has-addons">
         <span class="tag is-info">Foo</span>
         <a class="tag is-delete"></a>
+      </div>
+      <label class="checkbox">
+        <input type="checkbox">private
+      </label>
+      <div class="field">
+        <p class="control has-icons-left">
+          <input class="input" type="password" placeholder="Password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </p>
       </div>
     </section>
     <footer class="modal-card-foot">
