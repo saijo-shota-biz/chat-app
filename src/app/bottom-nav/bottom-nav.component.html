@@ -7,8 +7,8 @@
       <p class="is-size-7">Home</p>
     </a>
     <a class="navbar-item is-expanded is-block has-text-centered"
-       routerLink="/chat"
-       routerLinkActive="is-active">
+       routerLink="/rooms/{{ getCurrentRoom() }}/chat"
+       [class.is-active]="isActive(['rooms', getCurrentRoom(), 'chat'])">
       <i class="fa fa-comment-dots"></i>
       <p class="is-size-7">Chat</p>
     </a>

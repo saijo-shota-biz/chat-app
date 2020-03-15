@@ -1,7 +1,7 @@
 <div class="home">
   <div class="field search-field">
     <p class="control has-icons-left">
-      <input class="input is-rounded" type="text" placeholder="type to title or tag">
+      <input #searchInput class="input is-rounded" type="text" placeholder="type to room or tag" (input)="search(searchInput.value)">
       <span class="icon is-small is-left">
         <i class="fas fa-search"></i>
       </span>
@@ -15,20 +15,25 @@
         </span>
       </div>
       <p class="card-header-title">
-        {{ room.title }}
+        {{ room.name }}
       </p>
     </header>
     <div class="card-content">
       <div class="content">
         {{ room.description }}
+        <div>
+          <span *ngFor="let tag of room.tags" class="tag is-info" style="margin-right: 5px;">
+            {{ tag }}
+          </span>
+        </div>
       </div>
     </div>
     <footer class="card-footer">
-      <a href="#" class="card-footer-item">Share</a>
-      <a href="#" class="card-footer-item">Entry</a>
+      <a (click)="share(room.id)" class="card-footer-item">Share</a>
+      <a routerLink="/rooms/{{ room.id }}/chat" class="card-footer-item">Entry</a>
     </footer>
   </div>
-  <button *ngIf="rooms.length > 20" class="button is-fullwidth is-light" style="margin-top: 10px;">More...</button>
+  <button *ngIf="roomCount > 20" (click)="searchMore()" class="button is-fullwidth is-light" style="margin-top: 10px;">More...</button>
 </div>
 
 <button class="button is-fab is-large is-info" (click)="openModal()">
@@ -46,40 +51,44 @@
     </header>
     <section class="modal-card-body">
       <div class="field">
-        <label class="label">Title</label>
+        <label class="label">Name</label>
         <div class="control">
-          <input class="input" type="text">
+          <input [(ngModel)]="newRoom.name" class="input" type="text">
         </div>
       </div>
       <div class="field">
         <label class="label">Description</label>
         <div class="control">
-          <textarea class="textarea"></textarea>
+          <textarea [(ngModel)]="newRoom.description" class="textarea"></textarea>
         </div>
       </div>
       <label class="label">Tag</label>
       <div class="field is-grouped">
         <p class="control is-expanded">
-          <input class="input" type="text">
+          <input [(ngModel)]="tag" class="input" type="text">
         </p>
         <p class="control">
-          <button class="button is-info">
+          <button class="button is-info" (click)="addTag()">
             <span class="icon is-small">
               <i class="fas fa-plus"></i>
             </span>
           </button>
         </p>
       </div>
-      <div class="tags has-addons">
-        <span class="tag is-info">Foo</span>
-        <a class="tag is-delete"></a>
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control" *ngFor="let tag of newRoom.tags">
+          <div class="tags has-addons">
+            <a class="tag is-info">{{ tag }}</a>
+            <a (click)="deleteTag(tag)" class="tag is-delete"></a>
+          </div>
+        </div>
       </div>
       <label class="checkbox">
-        <input type="checkbox">private
+        <input [(ngModel)]="newRoom.private" type="checkbox">private
       </label>
-      <div class="field">
+      <div *ngIf="newRoom.private" class="field">
         <p class="control has-icons-left">
-          <input class="input" type="password" placeholder="Password">
+          <input [(ngModel)]="newRoom.password" class="input" type="password" placeholder="Password">
           <span class="icon is-small is-left">
             <i class="fas fa-lock"></i>
           </span>
@@ -87,7 +96,7 @@
       </div>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success">Save</button>
+      <button class="button is-success" (click)="save()">Save</button>
       <button class="button" (click)="closeModal()">Cancel</button>
     </footer>
   </div>
