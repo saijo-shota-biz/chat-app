@@ -3,9 +3,7 @@
   padding-top: 10px;
   padding-left: 15px;
   padding-right: 30px;
-  padding-bottom: 10px;
-  overflow: auto;
-  height: calc(100vh - 57.6px - 56px);
+  padding-bottom: 123.6px;
 }
 
 .input-box {
