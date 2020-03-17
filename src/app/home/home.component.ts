@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../types/Room';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, QueryFn, CollectionReference, Query } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -13,6 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 export class HomeComponent implements OnInit {
 
   public rooms: Room[];
+
+  public searchInput: string = "";
 
   public isOpenModal: boolean = false;
 
@@ -28,25 +30,38 @@ export class HomeComponent implements OnInit {
   public tag: string = "";
 
   constructor(private afs: AngularFirestore) {
-    afs.collection<Room>('rooms', ref => ref.orderBy('id').limit(20)).valueChanges()
+    afs.collection<Room>('rooms', ref => this.getQueryFn(ref)).valueChanges()
       .subscribe(rooms => this.rooms = rooms);
   }
 
   ngOnInit(): void {}
 
+  private getQueryFn(ref: CollectionReference, isSetStartAfter: boolean = false): Query {
+    let query: CollectionReference | Query = ref;
+    
+    if (this.searchInput) {
+      query = query.where('tags', 'array-contains', this.searchInput);
+    }
+    
+    query = query.orderBy('id');
+    
+    if (isSetStartAfter) {
+      query = query.startAfter(this.rooms[this.rooms.length - 1].id)
+    }
+    
+    query = query.limit(20);
+    
+    return query;
+  }
+
   public search(searchInput: string) {
-    const queryFn = searchInput ?
-      ref => ref.limit(20).orderBy('id') :
-      ref => ref.where('tags', 'array-contains', searchInput).orderBy('id').limit(20);
-    this.afs.collection<Room>('rooms', queryFn).valueChanges()
+    this.searchInput = searchInput;
+    this.afs.collection<Room>('rooms', ref => this.getQueryFn(ref)).valueChanges()
         .subscribe(rooms => this.rooms = rooms);
   }
 
   public searchMore() {
-    const queryFn = ref => ref.orderBy('id')
-                              .startAfter(this.rooms[this.rooms.length - 1].id)
-                              .limit(20)
-    this.afs.collection<Room>('rooms', queryFn).valueChanges()
+    this.afs.collection<Room>('rooms',  ref => this.getQueryFn(ref, true)).valueChanges()
       .subscribe(rooms => this.rooms.push(...rooms));
   }
 

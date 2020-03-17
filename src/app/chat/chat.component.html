@@ -2,7 +2,7 @@
   <div class="chat-box">
     
 
-    <div *ngFor="let comment of comments"
+    <div *ngFor="let comment of (comments | async)"
          [class.mine]="comment.userId === myId"
          [class.yours]="comment.userId !== myId">
       <p>{{ comment.content }}</p>
@@ -12,10 +12,10 @@
   <div class="input-box">
     <div class="field is-grouped">
       <p class="control is-expanded">
-        <input #message class="input" type="text" placeholder="type to message">
+        <input [(ngModel)]="message" class="input" type="text" placeholder="type to message">
       </p>
       <p class="control">
-        <button (click)="send(message.value)" class="button is-info">
+        <button (click)="send()" class="button is-info">
           <span class="icon is-small">
             <i class="fas fa-paper-plane"></i>
           </span>
