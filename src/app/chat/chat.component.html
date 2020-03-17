@@ -3,8 +3,8 @@
     
 
     <div *ngFor="let comment of comments"
-         [class.mine]="comment.speaker === myId"
-         [class.yours]="comment.speaker !== myId">
+         [class.mine]="comment.userId === myId"
+         [class.yours]="comment.userId !== myId">
       <p>{{ comment.content }}</p>
     </div>
   </div>

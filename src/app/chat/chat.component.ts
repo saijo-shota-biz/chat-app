@@ -42,7 +42,7 @@ export class ChatComponent implements OnInit {
   public send(message: string) {
     // TODO roomIdに送信
     const c: Comment = {
-      speaker: this.myId,
+      userId: this.myId,
       content: message,
       roomId: this.roomId
     }

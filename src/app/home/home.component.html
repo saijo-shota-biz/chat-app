@@ -1,7 +1,7 @@
 <div class="home">
   <div class="field search-field">
     <p class="control has-icons-left">
-      <input #searchInput class="input is-rounded" type="text" placeholder="type to room or tag" (input)="search(searchInput.value)">
+      <input #searchInput class="input is-rounded" type="text" placeholder="search by tag" (blur)="search(searchInput.value)">
       <span class="icon is-small is-left">
         <i class="fas fa-search"></i>
       </span>
@@ -33,7 +33,7 @@
       <a routerLink="/rooms/{{ room.id }}/chat" class="card-footer-item">Entry</a>
     </footer>
   </div>
-  <button *ngIf="roomCount > 20" (click)="searchMore()" class="button is-fullwidth is-light" style="margin-top: 10px;">More...</button>
+  <button (click)="searchMore()" class="button is-fullwidth is-light" style="margin-top: 10px;">More...</button>
 </div>
 
 <button class="button is-fab is-large is-info" (click)="openModal()">

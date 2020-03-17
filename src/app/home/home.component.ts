@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../types/Room';
+import { AngularFirestore } from '@angular/fire/firestore';
+import 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
+
 
 @Component({
   selector: 'app-home',
@@ -8,9 +12,7 @@ import { Room } from '../types/Room';
 })
 export class HomeComponent implements OnInit {
 
-  public rooms: Room[] = [];
-
-  public roomCount: number;
+  public rooms: Room[];
 
   public isOpenModal: boolean = false;
 
@@ -25,18 +27,27 @@ export class HomeComponent implements OnInit {
 
   public tag: string = "";
 
-  constructor() { }
-
-  ngOnInit(): void {
-    // TODO roomsの初期値を設定
+  constructor(private afs: AngularFirestore) {
+    afs.collection<Room>('rooms', ref => ref.orderBy('id').limit(20)).valueChanges()
+      .subscribe(rooms => this.rooms = rooms);
   }
 
+  ngOnInit(): void {}
+
   public search(searchInput: string) {
-    // TODO roomsを検索しなおす
+    const queryFn = searchInput ?
+      ref => ref.limit(20).orderBy('id') :
+      ref => ref.where('tags', 'array-contains', searchInput).orderBy('id').limit(20);
+    this.afs.collection<Room>('rooms', queryFn).valueChanges()
+        .subscribe(rooms => this.rooms = rooms);
   }
 
   public searchMore() {
-    // TODO roomsを追加する
+    const queryFn = ref => ref.orderBy('id')
+                              .startAfter(this.rooms[this.rooms.length - 1].id)
+                              .limit(20)
+    this.afs.collection<Room>('rooms', queryFn).valueChanges()
+      .subscribe(rooms => this.rooms.push(...rooms));
   }
 
   public share(room: Room): void {
@@ -74,16 +85,17 @@ export class HomeComponent implements OnInit {
   }
 
   public save(): void {
-    // TODO Roomを登録する
-
-    this.newRoom = {
-      id: '',
-      name: '',
-      description: '',
-      private: false,
-      tags: [],
-      password: ''
-    };
+    this.newRoom.id = uuidv4();
+    this.afs.collection<Room>('rooms').add(this.newRoom)
+      .then(() => this.newRoom = {
+        id: '',
+        name: '',
+        description: '',
+        private: false,
+        tags: [],
+        password: ''
+      })
+      .then(() => this.isOpenModal = false);
   }
 
 }

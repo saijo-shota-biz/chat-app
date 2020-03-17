@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "chat-app-47a10"
+  },
+  "targets": {
+    "chat-app-47a10": {
+      "hosting": {
+        "chat-app": [
+          "chat-app-47a10"
+        ]
+      }
+    }
   }
 }

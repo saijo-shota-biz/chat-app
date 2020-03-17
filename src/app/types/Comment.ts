@@ -1,5 +1,5 @@
 export interface Comment {
-  speaker: string;
+  userId: string;
   content: string;
   roomId: string;
 }
