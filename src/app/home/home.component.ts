@@ -61,7 +61,10 @@ export class HomeComponent implements OnInit {
     let query: CollectionReference | Query = ref;
     
     if (this.searchInput) {
-      query = query.where('tags', 'array-contains', this.searchInput);
+      this.searchInput.split(",")
+        .map(input => input.trim())
+        .filter(input => input !== "")
+        .forEach(input => query = query = query.where('tags', 'array-contains', input))
     }
     
     query = query.orderBy('id');
