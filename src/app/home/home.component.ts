@@ -115,7 +115,17 @@ export class HomeComponent implements OnInit {
     this.newRoom.tags = this.newRoom.tags.filter(t => t !== tag);
   }
 
-  public save(): void {
+  public save(): boolean {
+    if (this.newRoom.name === "") {
+      window.alert("Name is required.\r\nPlease input Room Name.");
+      return false;
+    }
+
+    if (this.newRoom.private && !this.newRoom.password) {
+      window.alert("Password is required for private room.\r\nPlease input Password or change to public room.");
+      return false;
+    }
+
     this.newRoom.id = uuidv4();
     this.afs.collection<Room>('rooms').add(this.newRoom)
       .then(() => this.newRoom = {
