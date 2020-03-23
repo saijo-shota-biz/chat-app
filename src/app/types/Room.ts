@@ -5,4 +5,5 @@ export interface Room {
   tags: string[];
   private: boolean;
   password?:string;
+  favs: string[];
 }

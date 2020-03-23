@@ -9,8 +9,23 @@
   </div>
   <div *ngFor="let room of rooms" class="card">
     <header class="card-header">
+      <div *ngIf="room.favs.includes(myId); then fav; else notFav;"></div>
+      <ng-template #fav>
+        <div class="card-header-icon" (click)="toggleFav(room)">
+          <span class="icon has-text-danger">
+            <i class="fas fa-heart" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
+      <ng-template #notFav>
+        <div class="card-header-icon" (click)="toggleFav(room)">
+          <span class="icon has-text-danger">
+            <i class="far fa-heart" aria-hidden="true"></i>
+          </span>
+        </div>
+      </ng-template>
       <div *ngIf="room.private" class="card-header-icon">
-        <span class="icon">
+        <span class="icon has-text-warning">
           <i class="fas fa-lock" aria-hidden="true"></i>
         </span>
       </div>

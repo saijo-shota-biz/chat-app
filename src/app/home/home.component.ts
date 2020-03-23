@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../types/Room';
-import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
+import { AngularFirestore, CollectionReference, Query, AngularFirestoreDocument } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
+import { firestore } from 'firebase';
 
 @Component({
   selector: 'app-home',
@@ -12,7 +13,11 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
+  private static readonly MY_ID_KEY: string = "chat-app-myId";
+
   public rooms: Room[];
+
+  public myId: string;
 
   public searchInput: string = "";
 
@@ -26,7 +31,8 @@ export class HomeComponent implements OnInit {
     description: "",
     private: false,
     tags: [],
-    password: ""
+    password: "",
+    favs: []
   };
 
   public currentRoom: Room = null;
@@ -38,6 +44,15 @@ export class HomeComponent implements OnInit {
   constructor(private afs: AngularFirestore, private route: Router) {
     afs.collection<Room>('rooms', ref => this.getQueryFn(ref)).valueChanges()
       .subscribe(rooms => this.rooms = rooms);
+
+      const myId = localStorage.getItem(HomeComponent.MY_ID_KEY);
+      if (myId) {
+        this.myId = myId;
+      } else {
+        const newId = uuidv4();
+        localStorage.setItem(HomeComponent.MY_ID_KEY, newId);
+        this.myId = newId;
+      }
   }
 
   ngOnInit(): void {}
@@ -64,6 +79,19 @@ export class HomeComponent implements OnInit {
     this.searchInput = searchInput;
     this.afs.collection<Room>('rooms', ref => this.getQueryFn(ref)).valueChanges()
         .subscribe(rooms => this.rooms = rooms);
+  }
+
+  public toggleFav(room: Room) {
+    const doc = this.afs.collection<Room>('rooms').doc(room.id);
+    if (room.favs.includes(this.myId)) {
+      doc.update({
+        favs: firestore.FieldValue.arrayRemove(this.myId)
+      });
+    } else {
+      doc.update({
+        favs: firestore.FieldValue.arrayUnion(this.myId)
+      });
+    }
   }
 
   public searchMore() {
@@ -127,14 +155,15 @@ export class HomeComponent implements OnInit {
     }
 
     this.newRoom.id = uuidv4();
-    this.afs.collection<Room>('rooms').add(this.newRoom)
+    this.afs.collection<Room>('rooms').doc(this.newRoom.id).set(this.newRoom)
       .then(() => this.newRoom = {
         id: '',
         name: '',
         description: '',
         private: false,
         tags: [],
-        password: ''
+        password: '',
+        favs: []
       })
       .then(() => this.isOpenModal = false);
   }
