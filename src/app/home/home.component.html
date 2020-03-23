@@ -29,8 +29,8 @@
       </div>
     </div>
     <footer class="card-footer">
-      <a (click)="share(room.id)" class="card-footer-item">Share</a>
-      <a routerLink="/rooms/{{ room.id }}/chat" class="card-footer-item">Entry</a>
+      <a (click)="share(room)" class="card-footer-item">Share</a>
+      <a (click)="entryRoom(room.id)" class="card-footer-item">Entry</a>
     </footer>
   </div>
   <button (click)="searchMore()" class="button is-fullwidth is-light" style="margin-top: 10px;">More...</button>
@@ -98,6 +98,28 @@
     <footer class="modal-card-foot">
       <button class="button is-success" (click)="save()">Save</button>
       <button class="button" (click)="closeModal()">Cancel</button>
+    </footer>
+  </div>
+</div>
+
+<div class="modal" [class.is-active]="isOpenPasswordForm">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Please Password Enter For Room Entry</p>
+      <button class="delete" aria-label="close" (click)="closePasswordForm()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="field">
+        <label class="label">Password</label>
+        <div class="control">
+          <input [(ngModel)]="password" class="input" type="text">
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" (click)="entry(password)">Entry</button>
+      <button class="button" (click)="closePasswordForm()">Cancel</button>
     </footer>
   </div>
 </div>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Room } from '../types/Room';
-import { AngularFirestore, QueryFn, CollectionReference, Query } from '@angular/fire/firestore';
+import { AngularFirestore, CollectionReference, Query } from '@angular/fire/firestore';
 import 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,6 +18,8 @@ export class HomeComponent implements OnInit {
 
   public isOpenModal: boolean = false;
 
+  public isOpenPasswordForm: boolean = false;
+
   public newRoom: Room = {
     id: "",
     name: "",
@@ -27,9 +29,13 @@ export class HomeComponent implements OnInit {
     password: ""
   };
 
+  public currentRoom: Room = null;
+
+  public password: string = "";
+
   public tag: string = "";
 
-  constructor(private afs: AngularFirestore) {
+  constructor(private afs: AngularFirestore, private route: Router) {
     afs.collection<Room>('rooms', ref => this.getQueryFn(ref)).valueChanges()
       .subscribe(rooms => this.rooms = rooms);
   }
@@ -63,6 +69,16 @@ export class HomeComponent implements OnInit {
   public searchMore() {
     this.afs.collection<Room>('rooms',  ref => this.getQueryFn(ref, true)).valueChanges()
       .subscribe(rooms => this.rooms.push(...rooms));
+  }
+
+  public entryRoom(roomId: string) {
+    const privateRoom = this.rooms.find(room => room.id === roomId);
+    if (privateRoom.private) {
+      this.isOpenPasswordForm = true;
+      this.currentRoom = privateRoom;
+    } else {
+      this.route.navigate(['rooms', roomId, 'chat']);
+    }
   }
 
   public share(room: Room): void {
@@ -113,4 +129,18 @@ export class HomeComponent implements OnInit {
       .then(() => this.isOpenModal = false);
   }
 
+  public closePasswordForm(): void {
+    this.isOpenPasswordForm = false;
+    this.currentRoom = null;
+    this.password = "";
+  }
+
+  public entry(password: string): void {
+    if (this.currentRoom.password === password) {
+      this.route.navigate(['rooms', this.currentRoom.id, 'chat']);
+    } else {
+      window.alert('password is wrong.');
+      this.closePasswordForm();
+    }
+  }
 }
