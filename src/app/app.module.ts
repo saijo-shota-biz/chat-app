@@ -9,7 +9,6 @@ import { FormsModule }   from '@angular/forms';
 import { AppRoutingModule } from './app-routing-module';
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
-import { AccountComponent } from './account/account.component';
 
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFireModule } from '@angular/fire';
@@ -22,7 +21,6 @@ import { environment } from 'src/environments/environment';
     BottomNavComponent,
     HomeComponent,
     ChatComponent,
-    AccountComponent
   ],
   imports: [
     BrowserModule,
