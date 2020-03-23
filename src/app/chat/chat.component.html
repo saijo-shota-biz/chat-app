@@ -15,7 +15,7 @@
         <input [(ngModel)]="message" class="input" type="text" placeholder="type to message">
       </p>
       <p class="control">
-        <button (click)="send()" class="button is-info">
+        <button (click)="send()" class="button is-info" [disabled]="!message">
           <span class="icon is-small">
             <i class="fas fa-paper-plane"></i>
           </span>
