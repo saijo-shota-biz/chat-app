@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
       this.searchInput.split(",")
         .map(input => input.trim())
         .filter(input => input !== "")
-        .forEach(input => query = query = query.where('tags', 'array-contains', input))
+        .forEach(input => query = query.where('tags', 'array-contains', input))
     }
     
     query = query.orderBy('id');
