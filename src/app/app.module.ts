@@ -2,18 +2,20 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { BottomNavComponent } from './bottom-nav/bottom-nav.component';
+import { BottomNavComponent } from './components/global/bottom-nav/bottom-nav.component';
 
 import { FormsModule }   from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing-module';
-import { HomeComponent } from './home/home.component';
-import { ChatComponent } from './chat/chat.component';
+import { HomeComponent } from './pages/home/home.component';
+import { ChatComponent } from './pages/chat/chat.component';
 
 import { AngularFireAnalyticsModule } from '@angular/fire/analytics';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore'
 import { environment } from 'src/environments/environment';
+import { CreateModalComponent } from './components/home/create-modal/create-modal.component';
+import { PasswordModalComponent } from './components/home/password-modal/password-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { environment } from 'src/environments/environment';
     BottomNavComponent,
     HomeComponent,
     ChatComponent,
+    CreateModalComponent,
+    PasswordModalComponent,
   ],
   imports: [
     BrowserModule,

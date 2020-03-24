@@ -1,10 +1,8 @@
 <div style="background-color: lightslategray; min-height: 100vh;">
   <div class="chat-box">
-    
-
-    <div *ngFor="let comment of (comments | async)"
-         [class.mine]="comment.userId === myId"
-         [class.yours]="comment.userId !== myId">
+    <div *ngFor="let comment of comments"
+         [class.mine]="comment.isMyComment()"
+         [class.yours]="comment.isYourComment()">
       <p>{{ comment.content }}</p>
     </div>
   </div>

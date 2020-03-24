@@ -1,0 +1,59 @@
+<div class="modal" [class.is-active]="isOpen">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">new Room</p>
+      <button class="delete" aria-label="close" (click)="close()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="field">
+        <label class="label">Name*</label>
+        <div class="control">
+          <input [(ngModel)]="room.name" class="input" type="text">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Description</label>
+        <div class="control">
+          <textarea [(ngModel)]="room.description" class="textarea"></textarea>
+        </div>
+      </div>
+      <label class="label">Tag</label>
+      <div class="field is-grouped">
+        <p class="control is-expanded">
+          <input [(ngModel)]="tag" class="input" type="text">
+        </p>
+        <p class="control">
+          <button class="button is-info" (click)="addTag(tag)">
+            <span class="icon is-small">
+              <i class="fas fa-plus"></i>
+            </span>
+          </button>
+        </p>
+      </div>
+      <div class="field is-grouped is-grouped-multiline">
+        <div class="control" *ngFor="let tag of room.tags">
+          <div class="tags has-addons">
+            <a class="tag is-info">{{ tag }}</a>
+            <a (click)="deleteTag(tag)" class="tag is-delete"></a>
+          </div>
+        </div>
+      </div>
+      <label class="checkbox">
+        <input [(ngModel)]="room.private" type="checkbox">private
+      </label>
+      <div *ngIf="room.private" class="field">
+        <p class="control has-icons-left">
+          <input [(ngModel)]="room.password" class="input" type="password" placeholder="Password">
+          <span class="icon is-small is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+        </p>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button is-success" (click)="save()">Save</button>
+      <button class="button" (click)="close()">Cancel</button>
+    </footer>
+  </div>
+</div>
