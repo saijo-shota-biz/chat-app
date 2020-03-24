@@ -28,7 +28,7 @@ export class Comment implements IComment {
   }
 
   public isYourComment(): boolean {
-    return !this.isMyComment;
+    return !this.isMyComment();
   }
 
   public clone(): Comment {
